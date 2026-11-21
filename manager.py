@@ -16,7 +16,8 @@ class TaskManager:
                 return task
         raise TaskNotFoundError("Task not found")
 
-
+    def list(self):
+        return self.tasks
 
     
 
