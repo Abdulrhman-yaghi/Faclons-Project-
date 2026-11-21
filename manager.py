@@ -1,13 +1,19 @@
 from task import Task
 
 
+class TaskNotFoundError(Exception):
+    pass
+
+
 class TaskManager:
     def __init__(self):
         self.tasks = []
-        
+        self.next_id = 1
+
     def add(self, title):
-        task = Task(len(self.tasks) + 1, title)
+        task = Task(self.next_id, title)
         self.tasks.append(task)
+        self.next_id += 1
         return task
 
     def find(self, task_id):
@@ -21,6 +27,3 @@ class TaskManager:
 
     
 
-
-class TaskNotFoundError(Exception):
-    pass
