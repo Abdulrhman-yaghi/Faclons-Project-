@@ -1,4 +1,5 @@
 from manager import TaskManager, TaskNotFoundError
+from storage import Storage
 
 
 MENU = """
@@ -54,7 +55,10 @@ def update_task(manager, action):
 
 
 def main():
+    storage = Storage()
     manager = TaskManager()
+    manager.tasks = storage.load()
+    manager.next_id = max((task.id for task in manager.tasks), default=0) + 1
     actions = {
         "1": lambda: add_task(manager),
         "2": lambda: show_tasks(manager),
@@ -66,13 +70,15 @@ def main():
         print(MENU)
         choice = input("Select 1–5: ").strip()
         if choice == "5":
+            storage.save(manager.tasks)
             print("See you next time!")
             break
         action = actions.get(choice)
         if action is None:
             print("Choose a menu number from 1 to 5.")
             continue
-        action()
+        if action():
+            storage.save(manager.tasks)
 
 
 if __name__ == "__main__":
