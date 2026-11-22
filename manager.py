@@ -21,6 +21,16 @@ class TaskManager:
             if task.id == task_id:
                 return task
         raise TaskNotFoundError("Task not found")
+    
+    def complete(self, task_id):
+        task = self.find(task_id)
+        task.mark_done()
+        return task
+
+    def delete(self, task_id):
+        task = self.find(task_id)
+        self.tasks.remove(task)
+        return task
 
     def list(self):
         return self.tasks
